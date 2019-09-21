@@ -30,7 +30,7 @@ export default class TestCaseRunner {
     this.testCase = testCase
     this.supportCodeLibrary = supportCodeLibrary
     this.world = new supportCodeLibrary.World({
-      attach: ::attachmentManager.create,
+      attach: :: attachmentManager.create,
       parameters: worldParameters,
     })
     this.beforeHookDefinitions = this.getBeforeHookDefinitions()
@@ -118,7 +118,7 @@ export default class TestCaseRunner {
   }
 
   isSkippingSteps() {
-    return this.result.status !== Status.PASSED
+    return this.result.status === Status.FAILED
   }
 
   shouldSkipHook(isBeforeHook) {
@@ -127,9 +127,9 @@ export default class TestCaseRunner {
 
   shouldUpdateStatus(testStepResult) {
     switch (testStepResult.status) {
-      case Status.UNDEFINED:
+      // case Status.UNDEFINED:
       case Status.FAILED:
-      case Status.AMBIGUOUS:
+        // case Status.AMBIGUOUS:
         return !_.some(
           [Status.FAILED, Status.AMBIGUOUS, Status.UNDEFINED],
           this.result.status
@@ -202,11 +202,11 @@ export default class TestCaseRunner {
     const stepDefinitions = this.getStepDefinitions(step)
     if (stepDefinitions.length === 0) {
       return { status: Status.UNDEFINED }
-    } else if (stepDefinitions.length > 1) {
-      return {
-        exception: getAmbiguousStepException(stepDefinitions),
-        status: Status.AMBIGUOUS,
-      }
+      // } else if (stepDefinitions.length > 1) {
+      //   return {
+      //     exception: getAmbiguousStepException(stepDefinitions),
+      //     status: Status.AMBIGUOUS,
+      //   }
     } else if (this.isSkippingSteps()) {
       return { status: Status.SKIPPED }
     }
