@@ -22,7 +22,13 @@ export default class AttachmentManager {
         mediaType = 'text/plain'
       }
       this.createStringAttachment(data, { type: mediaType })
-    } else {
+    } else if (typeof data === 'object') {
+      if (!mediaType) {
+        mediaType = 'application/json'
+      }
+      this.createStringAttachment(data, { type: mediaType })
+    }
+    else {
       throw Error(
         'Invalid attachment data: must be a buffer, readable stream, or string'
       )
@@ -56,6 +62,10 @@ export default class AttachmentManager {
   }
 
   createStringAttachment(data, media) {
+    this.onAttachment({ data, media })
+  }
+
+  createObjectAttachment(data, media) {
     this.onAttachment({ data, media })
   }
 }
